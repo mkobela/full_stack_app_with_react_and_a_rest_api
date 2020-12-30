@@ -1,67 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
+
 import './App.css';
 
-/***
- * @function checkStatus
- * @property {object} response - fetch response
- * @returns {Promise} - promise from fetch
-***/
-function checkStatus(response) {
-  // check if fetch was successful
-  if (response.ok) {
-    return Promise.resolve(response);
-  } else {
-    return Promise.reject(new Error(response.statusText));
-  }
-}
+import Header from './components/Header';
+import UserSignUp from './components/UserSignUp';
+import UserSignIn from './components/UserSignIn';
+import UserSignOut from './components/UserSignOut';
 
-/***
- * @function fetchData
- * @property {string} url - url
- * @returns {Promise} - promise from fetch
-***/
-function fetchData(url) {
+import Courses from './components/Courses';
+import CourseDetail from './components/CourseDetail';
+import UpdateCourse from './components/UpdateCourse';
+import CreateCourse from './components/CreateCourse';
 
-  // send the request
-  return fetch(url)
-    .then(checkStatus)
-    .then(res => res.json())
-    .catch(error => console.error("ERROR !!!"));
-}
+import PrivateRoute from './components/PrivateRoute';
+import NotFound from './components/NotFound';
+import Error from './components/Error';
+import Forbidden from './components/Forbidden';
 
+import { withContext } from './components/Context/Context';
 
-function App() {
+const HeaderWithContext = withContext(Header);
+const UserSignUpWithContext = withContext(UserSignUp);
+const UserSignInWithContext = withContext(UserSignIn);
+const UserSignOutWithContext = withContext(UserSignOut);
 
-  const [state, setState] = useState([]);
+const CoursesWithContext = withContext(Courses);
+const CourseDetailWithContext = withContext(CourseDetail);
+const UpdateCourseWithContext = withContext(UpdateCourse);
+const CreateCourseWithContext = withContext(CreateCourse);
 
-  useEffect(() => {
-    fetchData('http://localhost:5000/api/courses')
-      .then(data => {
-        setState(data);
-      });
-  }, []);
+const ErrorWithContext = withContext(Error);
 
+const App = () => (
+  <Router>
+    <div>
+      <HeaderWithContext />
 
-  console.log("Render !!!")
-  // fetchData('http://localhost:5000/api/courses')
-  //   .then(data => {
-  //     bookArray = data;
-  //     console.log(bookArray);
-  //   });
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <Switch>
+        <Route exact path="/signin" component={UserSignInWithContext} />
+        <Route exact path="/signup" component={UserSignUpWithContext} />
+        <Route exact path="/signout" component={UserSignOutWithContext} />
         
-          {state.map((course, index) => (
-            <div key={index}>{course.title}</div>
-          ))}
-        
-      </header>
+        <Route exact path="/" component={CoursesWithContext} />
+
+        <PrivateRoute exact path="/courses/create" component={CreateCourseWithContext} />
+        <PrivateRoute exact path="/courses/:id/update" component={UpdateCourseWithContext} />
+        <Route exact path="/courses/:id" component={CourseDetailWithContext} />
+
+
+        <Route path="/error" component={ErrorWithContext} />
+        <Route path="/forbidden" component={Forbidden} />
+        <Route component={NotFound} />
+      </Switch>
     </div>
-  );
-}
+  </Router>
+);
 
 export default App;
+

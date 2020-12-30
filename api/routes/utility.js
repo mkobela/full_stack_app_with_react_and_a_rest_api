@@ -64,7 +64,7 @@ const authenticateUser = async (req, res, next) => {
       // (from the Authorization header) to the user's password
       // that was retrieved from the data store.
       const authenticated = bcryptjs
-        .compareSync(credentials.pass, user.password);
+        .compareSync(credentials.pass, user.confirmedPassword);
 
       // If the passwords match...
       if (authenticated) {
