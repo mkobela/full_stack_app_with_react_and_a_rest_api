@@ -13,6 +13,54 @@ export default class UserSignUp extends Component {
     errors: []
   }
 
+  change = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState(() => {
+      return {
+        [name]: value
+      };
+    });
+  }
+
+  submit = () => {
+    const { context } = this.props;
+
+    // Create user
+    const user = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      emailAddress: this.state.emailAddress,
+      password: this.state.password,
+      confirmedPassword: this.state.confirmedPassword
+    };
+
+    context.userActions.signUp(user)
+      .then(errors => {
+        if (errors.length) {
+          this.setState({ errors });
+        } else {
+          context.userActions.signIn(user.emailAddress, user.password)
+            .then(() => {
+              this.props.history.push('/');
+            })
+            .catch((err) => {
+              console.log(err);
+              this.props.history.push('/error');
+            });;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        this.props.history.push('/error');
+      });
+  }
+
+  cancel = () => {
+    this.props.history.push('/');
+  }
+
   render() {
     const {
       firstName,
@@ -66,53 +114,5 @@ export default class UserSignUp extends Component {
         </div>
       </div>
     );
-  }
-
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
-  }
-
-  submit = () => {
-    const { context } = this.props;
-   
-    // Create user
-    const user = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      emailAddress: this.state.emailAddress,
-      password: this.state.password,
-      confirmedPassword: this.state.confirmedPassword
-    };
-
-    context.userActions.signUp(user)
-      .then(errors => {
-        if (errors.length) {
-          this.setState({ errors });
-        } else {
-          context.userActions.signIn(user.emailAddress, user.password)
-            .then(() => {
-              this.props.history.push('/');
-            })
-            .catch((err) => {
-              console.log(err);
-              this.props.history.push('/error');
-            });;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        this.props.history.push('/error');
-      });
-  }
-
-  cancel = () => {
-    this.props.history.push('/');
   }
 }

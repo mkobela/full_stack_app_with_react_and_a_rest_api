@@ -9,18 +9,25 @@ var router = express.Router();
 // GET /courses
 // returns all courses
 router.get("/", utility.asyncHandler(async (req, res, next) => {
-  let courses = await Course.findAll({
-    attributes: {
-      exclude: ["createdAt", "updatedAt"]
-    },include: [{
-      model: User,
-      as: 'user',
+
+  try {
+    let courses = await Course.findAll({
       attributes: {
-        exclude: ["password", "createdAt", "updatedAt"]
-      }
-    }]
-  });
-  res.json(courses);
+        exclude: ["createdAt", "updatedAt"]
+      },include: [{
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: ["password", "createdAt", "updatedAt"]
+        }
+      }]
+    });
+    
+    res.json(courses);
+
+  } catch (error) {
+    utility.handleException(res, error);
+  }
 }));
 
 // GET /courses/:id

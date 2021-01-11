@@ -9,11 +9,16 @@ function CourseDetail(props) {
   const history = props.history;
   const { readCourse, deleteCourse } = props.context.courseActions;
 
-  const getCourse = (id) => {
+  useEffect(() => {
+    getItem(props.match.params.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
+
+  const getItem = (id) => {
     readCourse(id)
       .then(errors => {
         if (errors.length) {
-          this.setState({ errors });
+          history.push('/error');
         } 
       })
       .catch(err => {
@@ -22,12 +27,12 @@ function CourseDetail(props) {
       });
   }
 
-  const removeCourse = () => {
+  const deleteItem = () => {
 
     deleteCourse(course.id, user)
       .then(errors => {
         if (errors.length) {
-          this.setState({ errors });
+          history.push('/error');
         } else {
           history.push('/');
         }
@@ -37,10 +42,6 @@ function CourseDetail(props) {
         history.push('/error');
       });
   }
-
-  useEffect(() => {
-    getCourse(props.match.params.id);
-   }, []);
   
   if(!course){
     return (
@@ -69,7 +70,7 @@ function CourseDetail(props) {
                             state: { course }
                           }}
                         >Update Course</NavLink>
-                        <button className="button" onClick={removeCourse}>Delete Course</button></>)
+                        <button className="button" onClick={deleteItem}>Delete Course</button></>)
                         : (null)}
   
                       <NavLink className="button button-secondary"

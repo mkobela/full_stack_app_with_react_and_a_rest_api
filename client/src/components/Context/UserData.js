@@ -1,42 +1,38 @@
-import config from './config';
+import Cookies from 'js-cookie';
+import BaseData from './BaseData';
 
-export default class UserData {
-  
-  api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
-    const url = config.apiBaseUrl + path;
-  
-    const options = {
-      method,
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-    };
-
-    if (body !== null) {
-      options.body = JSON.stringify(body);
-    }
-
-    if (requiresAuth) {    
-      const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
-      options.headers['Authorization'] = `Basic ${encodedCredentials}`;
-    }
-    return fetch(url, options);
+export default class UserData extends BaseData{
+  constructor(provider) {
+    super();
+    this.context = provider;
   }
 
-  async getUser(emailAddress, password) {
-    const response = await this.api(`/users`, 'GET', null, true, { emailAddress, password });
-    if (response.status === 200) {
-      return response.json().then(data => data);
+  signIn = async (emailAddress, password) => {
+    const user = await this.getUser(emailAddress, password);
+    if (user !== null) {
+      user.password = password;
+
+      this.context.setState(() => {
+        return {
+          authenticatedUser: user,
+        };
+      });
+      
+      const cookieOptions = {
+        expires: 1 // 1 day
+      };
+
+      Cookies.set('authenticatedUser', JSON.stringify(user), cookieOptions);
     }
-    else if (response.status === 401) {
-      return null;
-    }
-    else {
-      throw new Error();
-    }
+    return user;
+  }
+
+  signOut = () => {
+    this.context.setState({ authenticatedUser: null });
+    Cookies.remove('authenticatedUser');
   }
   
-  async createUser(user) {
+  signUp = async (user) => {
     const response = await this.api('/users', 'POST', user);
     if (response.status === 201) {
       return [];
@@ -50,4 +46,17 @@ export default class UserData {
       throw new Error();
     }
   }
+
+  getUser = async (emailAddress, password) => {
+      const response = await this.api(`/users`, 'GET', null, true, { emailAddress, password });
+      if (response.status === 200) {
+        return response.json().then(data => data);
+      }
+      else if (response.status === 401) {
+        return null;
+      }
+      else {
+        throw new Error();
+      }
+    }
 }

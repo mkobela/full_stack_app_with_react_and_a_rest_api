@@ -12,6 +12,40 @@ export default class CreateCourse extends Component {
     errors: []
   }
 
+  change = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    this.setState(() => {
+      return {
+        [name]: value
+      };
+    });
+  }
+
+  submit = () => {
+    const history = this.props.history;
+    const { createCourse } = this.props.context.courseActions;
+
+    createCourse(this.state)
+    .then(errors => {
+      if (errors.length) {
+        this.setState({ errors });
+      } else {
+        history.push('/');
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      history.push('/error');
+    });
+
+  }
+
+  cancel = () => {
+    this.props.history.push('/');
+  }
+
   render() {
     const { authenticatedUser } = this.props.context;
     const {
@@ -67,39 +101,5 @@ export default class CreateCourse extends Component {
         </div>
       </div>
     );
-  }
-
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
-  }
-
-  submit = () => {
-    const history = this.props.history;
-    const { createCourse } = this.props.context.courseActions;
-
-    createCourse(this.state)
-    .then(errors => {
-      if (errors.length) {
-        this.setState({ errors });
-      } else {
-        history.push('/');
-      }
-    })
-    .catch(err => {
-      console.error(err)
-      history.push('/error');
-    });
-
-  }
-
-  cancel = () => {
-    this.props.history.push('/');
   }
 }

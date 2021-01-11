@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Courses(props) {
   const { courses } = props.context;
 
-  useState(() =>{
+  useEffect(() =>{
     props.context.courseActions.readCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

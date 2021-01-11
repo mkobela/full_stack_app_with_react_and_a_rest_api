@@ -1,58 +1,70 @@
-import config from './config';
+import BaseData from './BaseData';
 
-export default class CourseData {
+export default class CourseData extends BaseData {
 
-  /***
-   * @function checkStatus
-   * @property {object} response - fetch response
-   * @returns {Promise} - promise from fetch
-  ***/
-  checkStatus(response) {
-    // check if fetch was successful
-    if (response.ok) {
-      return Promise.resolve(response);
+  constructor(provider) {
+    super();
+    this.context = provider;
+  }
+
+  createCourse = async (course) => {
+    const user = this.context.state.authenticatedUser;
+    const response = await this.api('/courses', 'POST', course, true, user);
+    if (response.status === 201) {
+      return [];
+    } else if (response.status === 400) {
+      const data = await response.json();
+      return data.errors;
     } else {
-      return Promise.reject(new Error(response.statusText));
+      throw new Error();
     }
   }
 
-  /***
-   * @function fetchData
-   * @property {string} url - url
-   * @returns {Promise} - promise from fetch
-  ***/
-  fetchData(url) {
-
-    // send the request
-    return fetch(url)
-      .then(this.checkStatus)
-      .then(res => res.json())
-      .catch(error => console.error("ERROR !!!"));
+  readCourse = async (id) => {
+    const response = await this.api(`/courses/${id}`, 'GET');
+    if (response.status === 200) {
+      const data = await response.json();
+      this.context.setState({ selectedCourse: data });
+      return data;
+    } else if (response.status === 400) {
+      const data = await response.json();
+      return data.errors;
+    } else {
+      throw new Error();
+    }
   }
 
-  api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
-    const url = config.apiBaseUrl + path;
-
-    const options = {
-      method,
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-    };
-
-    if (body !== null) {
-      options.body = JSON.stringify(body);
+  readCourses = async () => {
+    const response = await this.api(`/courses`, 'GET', null, false, null);
+    if (response.status === 200) {
+      const data = await response.json();
+      this.context.setState({ courses: data });
+      this.context.setState({ selectedCourse: null });
+      return data;
+    } else if (response.status === 400) {
+      const data = await response.json();
+      return data.errors;
+    } else {
+      throw new Error();
     }
-
-    if (requiresAuth) {
-      const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
-      options.headers['Authorization'] = `Basic ${encodedCredentials}`;
-    }
-    return fetch(url, options);
   }
 
-  async deleteCourse(courseId, user) {
+  updateCourse = async (course) => {
+    const user = this.context.state.authenticatedUser;
+    const response = await this.api(`/courses/${course.id}`, 'PUT', course, true, user);
+    if (response.status === 204) {
+      return [];
+    } else if (response.status === 400) {
+      const data = await response.json();
+      return data.errors;
+    } else {
+      throw new Error();
+    }
+  }
 
+  deleteCourse = async (courseId) => {
+   
+    const user = this.context.state.authenticatedUser;
     const response = await this.api(`/courses/${courseId}`, 'DELETE', null, true, user);
     if (response.status === 204) {
       return [];
@@ -60,7 +72,6 @@ export default class CourseData {
       const data = await response.json();
       return data.errors;
     } else {
-      console.log("IN THE ERROR");
       throw new Error();
     }
   }

@@ -1,106 +1,153 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import Form from './Form';
 
-export default class UpdateCourse extends Component {
-  course = this.props.location.state.course;
+function UpdateCourse(props) {
 
-  state = {
-    id: this.course.id,
-    title: this.course.title,
-    description: this.course.description,
-    estimatedTime: this.course.estimatedTime,
-    materialsNeeded: this.course.materialsNeeded,
-    userId: this.props.context.authenticatedUser.id,
-    errors: []
+  const { readCourse } = props.context.courseActions;
+  const { authenticatedUser } = props.context;
+
+  const [course, setCourse] = useState(props.context.selectedCourse);
+  const [errors, setErrors] = useState([]);
+
+  const change = (event) => {
+    const { name, value } = event.target;
+
+    setCourse(prevState => {
+      let temp = Object.assign({}, prevState);
+      temp[name] = value;
+      return temp;
+    })
   }
 
-  render() {
+  const submit = () => {
+    const history = props.history;
+    const { updateCourse, readCourses } = props.context.courseActions;
 
-    const { authenticatedUser } = this.props.context;
+    updateCourse(course)
+      .then(errors => {
+        if (errors.length) {
+          setErrors(errors);
+        } else {
+
+          // refresh course list
+          readCourses().then(data => {
+            if (data) {
+              history.push('/');
+            }
+          })
+            .catch(err => {
+              console.error(err)
+              history.push('/error');
+            });
+        }
+      })
+      .catch(err => {
+        console.error(err)
+        history.push('/error');
+      });
+  }
+
+  const cancel = () => {
+    props.history.goBack();;
+  }
+
+  const getCourse = (id) => {
+    const history = props.history;
+    readCourse(id)
+      .then(errors => {
+        if (errors.length) {
+          setErrors(errors);
+        } else {
+          setCourse(errors);
+        }
+      })
+      .catch(err => {
+        console.error(err)
+        history.push('/error');
+      });
+  }
+
+  useEffect(() => {
+    if (!course) {
+      getCourse(props.match.params.id);
+
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!course) {
+    return (
+      <div>Loading ...</div>
+    );
+  } else {
+
     const {
       title,
       description,
       estimatedTime,
-      materialsNeeded,
-      errors,
-    } = this.state;
-    
-    return (
-      <div className="bounds course--detail">
-        <h1>Update Course</h1>
-        <div>
-          <Form
-            cancel={this.cancel}
-            errors={errors}
-            submit={this.submit}
-            submitButtonText="Submit"
-            elements={() => (
-              <React.Fragment>
+      materialsNeeded
+    } = course;
 
-                <div className="grid-66">
-                  <div className="course--header">
-                    <h4 className="course--label">Course</h4>
-                    <div>
-                      <input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value={title} onChange={this.change} /></div>
-                    <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
-                  </div>
-                  <div className="course--description">
-                    <div>
-                      <textarea id="description" name="description" className placeholder="Course description..." value={description} onChange={this.change} /></div>
-                  </div>
-                </div>
-                <div className="grid-25 grid-right">
-                  <div className="course--stats">
-                    <ul className="course--stats--list">
-                      <li className="course--stats--list--item">
-                        <h4>Estimated Time</h4>
+    /* eslint eqeqeq: 0 */
+    var authorizedUser = false;
+    if (authenticatedUser.emailAddress == course.user.emailAddress) {
+      authorizedUser = true;
+    }
+
+    return (
+      <>
+        {authorizedUser ? (
+          <div className="bounds course--detail">
+            <h1>Update Course</h1>
+            <div>
+              <Form
+                cancel={cancel}
+                errors={errors}
+                submit={submit}
+                submitButtonText="Submit"
+                elements={() => (
+                  <React.Fragment>
+
+                    <div className="grid-66">
+                      <div className="course--header">
+                        <h4 className="course--label">Course</h4>
                         <div>
-                          <input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value={estimatedTime} onChange={this.change} /></div>
-                      </li>
-                      <li className="course--stats--list--item">
-                        <h4>Materials Needed</h4>
-                        <div><textarea id="materialsNeeded" name="materialsNeeded" className placeholder="List materials..." value={materialsNeeded} onChange={this.change} /></div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </React.Fragment>
-            )} />
-        </div>
-      </div>
+                          <input id="title" name="title" type="text" className="input-title course--title--input" placeholder="Course title..." value={title} onChange={change} /></div>
+                        <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
+                      </div>
+                      <div className="course--description">
+                        <div>
+                          <textarea id="description" name="description" className placeholder="Course description..." value={description} onChange={change} /></div>
+                      </div>
+                    </div>
+                    <div className="grid-25 grid-right">
+                      <div className="course--stats">
+                        <ul className="course--stats--list">
+                          <li className="course--stats--list--item">
+                            <h4>Estimated Time</h4>
+                            <div>
+                              <input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value={estimatedTime} onChange={change} /></div>
+                          </li>
+                          <li className="course--stats--list--item">
+                            <h4>Materials Needed</h4>
+                            <div><textarea id="materialsNeeded" name="materialsNeeded" className placeholder="List materials..." value={materialsNeeded} onChange={change} /></div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                )} />
+            </div>
+          </div>
+        ) : (
+            <Redirect to={{
+              pathname: '/forbidden'
+            }} />
+          )}
+      </>
     );
   }
-
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
-  }
-
-  submit = () => {
-    const history = this.props.history;
-    const { updateCourse } = this.props.context.courseActions;
-
-    updateCourse(this.state)
-    .then(errors => {
-      if (errors.length) {
-        this.setState({ errors });
-      } else {
-        history.push('/');
-      }
-    })
-    .catch(err => {
-      console.error(err)
-      history.push('/error');
-    });
-  }
-
-  cancel = () => {
-    this.props.history.push('/');
-  }
 }
+
+export default UpdateCourse

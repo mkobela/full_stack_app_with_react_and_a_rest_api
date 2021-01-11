@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
-import UserContext from './UserContext';
-import CourseContext from './CourseContext';
+import UserData from './UserData';
+import CourseData from './CourseData';
 
 const Context = React.createContext();
 
@@ -15,13 +15,8 @@ export class Provider extends Component {
       selectedCourse: null
     };
 
-    this.userContext = new UserContext(this);
-    this.courseContext = new CourseContext(this);
-  }
-
-  componentDidMount() {
-
-    // this.courseContext.readCourses();
+    this.userData = new UserData(this);
+    this.courseData = new CourseData(this);
   }
 
   render() {
@@ -32,16 +27,16 @@ export class Provider extends Component {
       courses,
       selectedCourse,
       userActions: {
-        signIn: this.userContext.signIn,
-        signOut: this.userContext.signOut,
-        signUp: this.userContext.createUser
+        signIn: this.userData.signIn,
+        signOut: this.userData.signOut,
+        signUp: this.userData.signUp
       },
       courseActions: {
-        createCourse: this.courseContext.createCourse,
-        readCourse: this.courseContext.readCourse,
-        readCourses: this.courseContext.readCourses,
-        updateCourse: this.courseContext.updateCourse,
-        deleteCourse: this.courseContext.deleteCourse
+        createCourse: this.courseData.createCourse,
+        readCourse: this.courseData.readCourse,
+        readCourses: this.courseData.readCourses,
+        updateCourse: this.courseData.updateCourse,
+        deleteCourse: this.courseData.deleteCourse
       },
     };
 
