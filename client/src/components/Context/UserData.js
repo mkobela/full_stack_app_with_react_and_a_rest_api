@@ -1,6 +1,10 @@
 import Cookies from 'js-cookie';
 import BaseData from './BaseData';
 
+/**
+* @class UserData
+* @classdesc User Data context
+*/
 export default class UserData extends BaseData{
   constructor(provider) {
     super();

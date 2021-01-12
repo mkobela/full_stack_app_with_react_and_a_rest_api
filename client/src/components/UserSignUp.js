@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Form from './Form';
 
+/**
+* @class UserSignUp
+* @classdesc User sign up compoment
+*/
 export default class UserSignUp extends Component {
 
   state = {
@@ -13,6 +17,7 @@ export default class UserSignUp extends Component {
     errors: []
   }
 
+  // listen for changes on form
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -24,6 +29,7 @@ export default class UserSignUp extends Component {
     });
   }
 
+  // send contents to server
   submit = () => {
     const { context } = this.props;
 
@@ -37,9 +43,9 @@ export default class UserSignUp extends Component {
     };
 
     context.userActions.signUp(user)
-      .then(errors => {
-        if (errors.length) {
-          this.setState({ errors });
+      .then(data => {
+        if (data.length) {
+          this.setState({ errors: data });
         } else {
           context.userActions.signIn(user.emailAddress, user.password)
             .then(() => {

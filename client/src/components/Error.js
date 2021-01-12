@@ -1,5 +1,9 @@
 import React from 'react';
 
+/***
+ * @function Error - error compoment
+ * @returns {object} - render object
+***/
 const Error = () => {
   return (
     <div class="bounds">

@@ -2,6 +2,11 @@ import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { NavLink } from 'react-router-dom';
 
+/***
+ * @function CourseDetails - course detail compoment
+ * @property {object} props - compoment props
+ * @returns {object} - render object
+***/
 function CourseDetail(props) {
 
   const user = props.context.authenticatedUser;
@@ -16,8 +21,8 @@ function CourseDetail(props) {
 
   const getItem = (id) => {
     readCourse(id)
-      .then(errors => {
-        if (errors.length) {
+      .then(data => {
+        if (data.length) {
           history.push('/error');
         } 
       })
@@ -28,10 +33,9 @@ function CourseDetail(props) {
   }
 
   const deleteItem = () => {
-
     deleteCourse(course.id, user)
-      .then(errors => {
-        if (errors.length) {
+      .then(data => {
+        if (data.length) {
           history.push('/error');
         } else {
           history.push('/');

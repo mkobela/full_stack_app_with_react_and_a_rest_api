@@ -2,6 +2,11 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Consumer } from './Context/Context';
 
+/***
+ * @function PrivateRoutes - private route compoment
+ * @property {object} props - compoment props
+ * @returns {object} - render object
+***/
 const PrivateRoutes =  ({ component: Component, ...rest }) => {
   return (
     <Consumer>

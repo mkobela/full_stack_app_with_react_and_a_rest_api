@@ -2,10 +2,10 @@
  * @author Michael Kobela <mkobela@gmail.com>
  ***/
 
-/******************************************
+/**************************************************
 Treehouse FSJS Techdegree:
 Project 10 - Full Stack App with REST API/Sequeilze
-******************************************/
+***************************************************/
 'use strict';
 
 // load modules
@@ -49,7 +49,6 @@ app.use("/api/courses", courseRoutes);
 
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {
-  getName();
   res.json({
     message: 'Welcome to the REST API project!',
   });

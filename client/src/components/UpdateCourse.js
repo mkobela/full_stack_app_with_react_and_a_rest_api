@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import Form from './Form';
 
+/***
+ * @function UpdateCourse - course update compoment
+ * @property {object} props - compoment props
+ * @returns {object} - render object
+***/
 function UpdateCourse(props) {
 
-  const { readCourse } = props.context.courseActions;
+  const { readCourse, readCourses, updateCourse } = props.context.courseActions;
   const { authenticatedUser } = props.context;
 
   const [course, setCourse] = useState(props.context.selectedCourse);
@@ -22,14 +27,12 @@ function UpdateCourse(props) {
 
   const submit = () => {
     const history = props.history;
-    const { updateCourse, readCourses } = props.context.courseActions;
 
     updateCourse(course)
-      .then(errors => {
-        if (errors.length) {
-          setErrors(errors);
+      .then(data => {
+        if (data.length) {
+          setErrors(data);
         } else {
-
           // refresh course list
           readCourses().then(data => {
             if (data) {
@@ -55,11 +58,11 @@ function UpdateCourse(props) {
   const getCourse = (id) => {
     const history = props.history;
     readCourse(id)
-      .then(errors => {
-        if (errors.length) {
-          setErrors(errors);
+      .then(data => {
+        if (data.length) {
+          setErrors(data);
         } else {
-          setCourse(errors);
+          setCourse(data);
         }
       })
       .catch(err => {

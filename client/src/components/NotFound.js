@@ -1,5 +1,9 @@
 import React from 'react';
 
+/***
+ * @function NotFound - not found compoment
+ * @returns {object} - render object
+***/
 const NotFound = () => (
   <div className="bounds">
     <h1>Not Found</h1>

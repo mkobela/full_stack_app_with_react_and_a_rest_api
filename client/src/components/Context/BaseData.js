@@ -1,5 +1,9 @@
 import config from './config';
 
+/**
+* @class BaseData
+* @classdesc Base data class
+*/
 export default class BaseData{
   
   api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {

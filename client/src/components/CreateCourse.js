@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Form from './Form';
 
+/**
+* @class CreaseCourse
+* @classdesc Course creation compoment
+*/
 export default class CreateCourse extends Component {
   
   state = {
@@ -12,6 +16,7 @@ export default class CreateCourse extends Component {
     errors: []
   }
 
+  // listen for changes on form
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -23,14 +28,15 @@ export default class CreateCourse extends Component {
     });
   }
 
+  // send contents to server
   submit = () => {
     const history = this.props.history;
     const { createCourse } = this.props.context.courseActions;
 
     createCourse(this.state)
-    .then(errors => {
-      if (errors.length) {
-        this.setState({ errors });
+    .then(data => {
+      if (data.length) {
+        this.setState({ errors: data });
       } else {
         history.push('/');
       }
@@ -39,9 +45,9 @@ export default class CreateCourse extends Component {
       console.error(err)
       history.push('/error');
     });
-
   }
 
+  // handle cancel button
   cancel = () => {
     this.props.history.push('/');
   }

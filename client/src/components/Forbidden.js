@@ -1,5 +1,9 @@
 import React from 'react';
 
+/***
+ * @function Forbidden - forbidden compoment
+ * @returns {object} - render object
+***/
 const Forbidden = () => {
   return (
     <div class="bounds">

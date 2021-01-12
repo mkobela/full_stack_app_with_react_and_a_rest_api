@@ -1,8 +1,17 @@
+/***
+ * @author Michael Kobela <mkobela@gmail.com>
+ ***/
+
+/**************************************************
+Treehouse FSJS Techdegree:
+Project 10 - Full Stack App with REST API/Sequeilze
+***************************************************/
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 
+// import React components
 import Header from './components/Header';
 import UserSignUp from './components/UserSignUp';
 import UserSignIn from './components/UserSignIn';

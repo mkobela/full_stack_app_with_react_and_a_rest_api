@@ -5,6 +5,10 @@ import CourseData from './CourseData';
 
 const Context = React.createContext();
 
+/**
+* @class Provider
+* @classdesc Provider for Context API
+*/
 export class Provider extends Component {
 
   constructor() {
@@ -55,7 +59,6 @@ export const Consumer = Context.Consumer;
  * @param {class} Component - A React component.
  * @returns {function} A higher-order component.
  */
-
 export function withContext(Component) {
   return function ContextComponent(props) {
     return (

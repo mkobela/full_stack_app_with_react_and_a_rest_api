@@ -1,11 +1,23 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+/***
+ * @function Courses - courses home page compoment
+ * @property {object} props - compoment props
+ * @returns {object} - render object
+***/
 function Courses(props) {
   const { courses } = props.context;
+  const { readCourses } = props.context.courseActions;
+  const history = props.history;
 
-  useEffect(() =>{
-    props.context.courseActions.readCourses();
+  useEffect(() => {
+
+    readCourses()
+      .catch(err => {
+        console.error(err)
+        history.push('/error');
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

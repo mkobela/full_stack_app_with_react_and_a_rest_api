@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Form from './Form';
 
+/**
+* @class UserSignIn
+* @classdesc User sign in compoment
+*/
 export default class UserSignIn extends Component {
   state = {
     emailAddress: '',
@@ -9,6 +13,7 @@ export default class UserSignIn extends Component {
     errors: [],
   }
 
+  // listen for changes on form
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -20,6 +25,7 @@ export default class UserSignIn extends Component {
     });
   }
 
+  // send contents to server
   submit = () => {
     const { context } = this.props;
     const { from } = this.props.location.state || { from: { pathname: '/' } };

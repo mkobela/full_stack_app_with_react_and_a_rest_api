@@ -1,5 +1,10 @@
 import React from 'react';
 
+/***
+ * @function Form - form compoment
+ * @property {object} props - compoment props
+ * @returns {object} - render object
+***/
 const Forms = (props) => {
   const {
     cancel,
