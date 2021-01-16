@@ -9,7 +9,6 @@ var router = express.Router();
 // GET /courses
 // returns all courses
 router.get("/", utility.asyncHandler(async (req, res, next) => {
-
   try {
     let courses = await Course.findAll({
       attributes: {
@@ -74,6 +73,7 @@ router.post("/", utility.authenticateUser, utility.asyncHandler(async (req, res,
 // PUT /course/:id
 // updates a course by id
 router.put("/:id", utility.authenticateUser, utility.asyncHandler(async (req, res, next) => {
+
   let course;
   try {
     course = await Course.findByPk(req.params.id);

@@ -7,12 +7,17 @@ import { Link } from 'react-router-dom';
 */
 class Header extends React.PureComponent {
   render() {
+
     const { context } = this.props;
     const authUser = context.authenticatedUser;
     return (
       <div className="header">
         <div className="bounds">
-          <h1 className="header--logo">Courses</h1>
+          <h1 className="header--logo">
+            <Link
+              to="/"
+            >Courses</Link>
+          </h1>
           <nav>
             {authUser ? (
               <React.Fragment>

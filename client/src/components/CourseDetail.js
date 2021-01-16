@@ -99,11 +99,11 @@ function CourseDetail(props) {
                   <div className="grid-25 grid-right">
                     <div className="course--stats">
                       <ul className="course--stats--list">
-                        <li className="course--stats--list--item">
+                        <li>
                           <h4>Estimated Time</h4>
                           <h3>{course.estimatedTime}</h3>
                         </li>
-                        <li className="course--stats--list--item">
+                        <li>
                           <h4>Materials Needed</h4>
                           <ReactMarkdown source={course.materialsNeeded} />
                         </li>

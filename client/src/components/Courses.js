@@ -12,7 +12,6 @@ function Courses(props) {
   const history = props.history;
 
   useEffect(() => {
-
     readCourses()
       .catch(err => {
         console.error(err)

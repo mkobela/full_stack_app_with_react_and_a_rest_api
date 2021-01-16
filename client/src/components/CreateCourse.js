@@ -90,14 +90,14 @@ export default class CreateCourse extends Component {
                 <div className="grid-25 grid-right">
                   <div className="course--stats">
                     <ul className="course--stats--list">
-                      <li className="course--stats--list--item">
+                      <li>
                         <h4>Estimated Time</h4>
                         <div>
                           <input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value={estimatedTime} onChange={this.change} /></div>
                       </li>
-                      <li className="course--stats--list--item">
+                      <li>
                         <h4>Materials Needed</h4>
-                        <div><textarea id="materialsNeeded" name="materialsNeeded" className placeholder="List materials..." value={materialsNeeded} onChange={this.change} /></div>
+                        <div><textarea id="materialsNeeded" name="materialsNeeded" placeholder="List materials..." value={materialsNeeded} onChange={this.change} /></div>
                       </li>
                     </ul>
                   </div>

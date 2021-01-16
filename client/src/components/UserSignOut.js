@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }from 'react';
 import { Redirect } from 'react-router-dom';
 
 /***
@@ -7,7 +7,14 @@ import { Redirect } from 'react-router-dom';
  * @returns {object} - render object
 ***/
 const UserSignOut =  ({context}) => {
-  context.userActions.signOut();
+
+   useEffect(() => {
+    return () => {
+      // called when component unmounts
+      context.userActions.signOut();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Redirect to="/" />

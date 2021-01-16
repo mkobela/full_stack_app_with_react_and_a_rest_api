@@ -121,20 +121,20 @@ function UpdateCourse(props) {
                       </div>
                       <div className="course--description">
                         <div>
-                          <textarea id="description" name="description" className placeholder="Course description..." value={description} onChange={change} /></div>
+                          <textarea id="description" name="description" placeholder="Course description..." value={description} onChange={change} /></div>
                       </div>
                     </div>
                     <div className="grid-25 grid-right">
                       <div className="course--stats">
                         <ul className="course--stats--list">
-                          <li className="course--stats--list--item">
+                          <li>
                             <h4>Estimated Time</h4>
                             <div>
                               <input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input" placeholder="Hours" value={estimatedTime} onChange={change} /></div>
                           </li>
-                          <li className="course--stats--list--item">
+                          <li>
                             <h4>Materials Needed</h4>
-                            <div><textarea id="materialsNeeded" name="materialsNeeded" className placeholder="List materials..." value={materialsNeeded} onChange={change} /></div>
+                            <div><textarea id="materialsNeeded" name="materialsNeeded" placeholder="List materials..." value={materialsNeeded} onChange={change} /></div>
                           </li>
                         </ul>
                       </div>
