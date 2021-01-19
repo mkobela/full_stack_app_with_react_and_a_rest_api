@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 /***
@@ -7,12 +7,14 @@ import { Link } from 'react-router-dom';
  * @returns {object} - render object
 ***/
 function Courses(props) {
-  const { courses } = props.context;
+  const [courses, setCourses] = useState(props.context.courses);
   const { readCourses } = props.context.courseActions;
   const history = props.history;
 
   useEffect(() => {
-    readCourses()
+    readCourses().then(data => {
+      setCourses(data);
+    })
       .catch(err => {
         console.error(err)
         history.push('/error');

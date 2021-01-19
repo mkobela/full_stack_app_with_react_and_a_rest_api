@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 
 /***
  * @function NotFound - not found compoment
@@ -13,6 +13,8 @@ const NotFound = () => (
     <NavLink className="button button-secondary"
       to="/"
     >Return to List</NavLink>
+
+    <Redirect to="/notfound" /> 
   </div>
 );
 

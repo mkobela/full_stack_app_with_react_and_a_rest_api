@@ -18,9 +18,15 @@ export default class CourseData extends BaseData {
       }
       return data;
     } else if (response.status === 400) {
+      // bad request
       const data = await response.json();
       return data.errors;
-    } else {
+    } else if (response.status === 404) {
+      // not found
+      const data = [];
+      return data;
+    }
+    else {
       throw new Error();
     }
   }

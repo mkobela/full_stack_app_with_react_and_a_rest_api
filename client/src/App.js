@@ -22,7 +22,7 @@ import CourseDetail from './components/CourseDetail';
 import UpdateCourse from './components/UpdateCourse';
 import CreateCourse from './components/CreateCourse';
 
-import Error from './components/Error';
+import UnhandledError from './components/UnhandledError';
 import Forbidden from './components/Forbidden';
 import NotFound from './components/NotFound';
 import PrivateRoute from './components/PrivateRoute';
@@ -39,8 +39,6 @@ const CreateCourseWithContext = withContext(CreateCourse);
 const CourseDetailWithContext = withContext(CourseDetail);
 const UpdateCourseWithContext = withContext(UpdateCourse);
 
-const ErrorWithContext = withContext(Error);
-
 const App = () => (
   <Router>
     <div>
@@ -55,10 +53,12 @@ const App = () => (
         <PrivateRoute exact path="/courses/create" component={CreateCourseWithContext} /> 
         <Route exact path="/courses/:id" component={CourseDetailWithContext} />
         <PrivateRoute exact path="/courses/:id/update" component={UpdateCourseWithContext} />
-
-        <Route path="/error" component={ErrorWithContext} />
+        
+        <Route path="/error" component={UnhandledError} />
         <Route path="/forbidden" component={Forbidden} />
+        <Route path="/notfound" component={NotFound} />
         <Route component={NotFound} />
+        
       </Switch>
     </div>
   </Router>

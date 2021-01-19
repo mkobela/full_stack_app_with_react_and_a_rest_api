@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
  * @function Error - error compoment
  * @returns {object} - render object
 ***/
-const Error = () => {
+const UnhandledError = () => {
   return (
     <div className="bounds">
       <h1>Error</h1>
@@ -18,4 +18,4 @@ const Error = () => {
   );
 }
 
-export default Error;
+export default UnhandledError;

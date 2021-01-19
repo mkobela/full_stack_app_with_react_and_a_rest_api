@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { NavLink } from 'react-router-dom';
 
@@ -9,8 +9,8 @@ import { NavLink } from 'react-router-dom';
 ***/
 function CourseDetail(props) {
 
+  const [course, setCourse] = useState(props.context.selectedCourse);
   const user = props.context.authenticatedUser;
-  const course = props.context.selectedCourse;
   const history = props.history;
   const { readCourse, deleteCourse } = props.context.courseActions;
 
@@ -22,9 +22,13 @@ function CourseDetail(props) {
   const getItem = (id) => {
     readCourse(id)
       .then(data => {
-        if (data.length) {
+        if (data.length === 0) {
+          history.push('/notfound');
+        } else if (data.length > 0) {
           history.push('/error');
-        } 
+        }else{
+          setCourse(data);
+        }
       })
       .catch(err => {
         console.error(err)
