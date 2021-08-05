@@ -5,7 +5,7 @@
 
 This project contains both the React.js client front end and the Node.js backend.
 
-## Node.js client
+## Node.js server
 
 From the root folder, cd into the api folder. Install the project's dependencies using `npm`.
 
