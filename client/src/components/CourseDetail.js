@@ -97,7 +97,7 @@ function CourseDetail(props) {
                       <p>By {course.user.firstName} {course.user.lastName}</p>
                     </div>
                     <div className="course--description">
-                      <ReactMarkdown source={course.description} />
+                      <ReactMarkdown children={course.description} />
                     </div>
                   </div>
                   <div className="grid-25 grid-right">
@@ -109,7 +109,7 @@ function CourseDetail(props) {
                         </li>
                         <li>
                           <h4>Materials Needed</h4>
-                          <ReactMarkdown source={course.materialsNeeded} />
+                          <ReactMarkdown children={course.materialsNeeded} />
                         </li>
                       </ul>
                     </div>
