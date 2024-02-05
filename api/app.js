@@ -74,7 +74,7 @@ app.use((err, req, res, next) => {
 });
 
 // set our port
-app.set('port', process.env.PORT || 5000);
+app.set('port', process.env.PORT || 4000);
 
 // Sequelize model synchronization, then start listening on our port.
 db.sequelize.sync({ force: false })

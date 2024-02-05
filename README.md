@@ -26,7 +26,7 @@ And lastly, start the application.
 npm start
 ```
 
-To test the Express server, browse to the URL [http://localhost:5000/
+To test the Express server, browse to the URL [http://localhost:4000/
 
 ## React.js client
 
