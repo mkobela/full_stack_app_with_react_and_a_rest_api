@@ -14,14 +14,14 @@
     "nodemon": "^3.1.7"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
-    "express": "^4.21.0",
+    "express": "^5.1.0",
     "morgan": "^1.10.0",
     "promise.prototype.finally": "^3.1.8",
-    "sequelize": "^6.37.3",
-    "sequelize-cli": "^6.6.2",
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.3",
     "sqlite3": "^5.1.7"
   }
 }
